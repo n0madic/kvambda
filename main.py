@@ -25,6 +25,12 @@ def kvambda(request):
                     return 'SAVED'
                 else:
                     return abort(500)
+            elif request.method == 'DELETE':
+                result = doc_ref.update({key: firestore.DELETE_FIELD})
+                if result:
+                    return 'DELETED'
+                else:
+                    return abort(500)
         else:
             return abort(403)
     else:
@@ -35,7 +41,7 @@ if __name__ == '__main__':
     from flask import Flask, request
     app = Flask(__name__)
 
-    @app.route('/<path:dummy>', methods=['GET', 'POST', 'PUT'])
+    @app.route('/<path:dummy>', methods=['GET', 'POST', 'PUT', 'DELETE'])
     def index(dummy):
         return kvambda(request)
 
